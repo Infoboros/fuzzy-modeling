@@ -6,31 +6,31 @@ criteries_quantitative = [
     FuzzyCriteria(
         'Стоимость',
         get_normal(1500, 300),
-        (0, 3000),
+        (600, 2400),
         1
     ),
     FuzzyCriteria(
         'Длина распространения сигнала',
         get_normal(0, 30),
-        (0, 40),
+        (0, 30),
         0.1
     ),
     FuzzyCriteria(
         'Пропускная способность',
         get_normal(0, 300),
-        (0, 400),
+        (0, 350),
         0.1
     ),
     FuzzyCriteria(
         'Количество VLAN портов',
         get_normal(0, 6),
-        (0, 10),
+        (0, 6),
         0.1
     ),
     FuzzyCriteria(
         'Вес',
         get_normal(150, 750),
-        (0, 400),
+        (150, 750),
         0.1
     ),
 ]
@@ -67,4 +67,5 @@ alternatives.print_criteries(
     criteries_qualitative
 )
 
-
+alternatives.print_symbols()
+sets = alternatives.get_sets(criteries_quantitative)

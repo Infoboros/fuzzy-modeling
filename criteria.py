@@ -30,9 +30,15 @@ class FuzzyCriteria(Criteria):
             ys.append(current)
             current += self.step
         xs = list(map(self.func, ys))
-        plt.plot(xs, ys)
+        plt.plot(ys, xs)
         plt.title(self.name)
         plt.show()
+
+    def get_set(self, column: [float]) -> [float]:
+        return [
+            self.func(el)
+            for el in column
+        ]
 
 
 class QualitativeCriteria(Criteria):
