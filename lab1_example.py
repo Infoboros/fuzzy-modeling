@@ -1,6 +1,65 @@
-from alternatives import Alternatives
+from many_criteria_choice import ManyCriteriaChoice
 from criteria import FuzzyCriteria, QualitativeCriteria
 from utils import get_normal
+
+
+def k2(x):
+    return {
+        0: 0,
+        5: 0.05,
+        10: 0.222,
+        15: 0.5,
+        20: 0.778,
+        25: 0.986,
+        30: 1
+    }[x]
+
+
+def k3(x):
+    return {
+        0: 0,
+        50: 0.05,
+        100: 0.22,
+        150: 0.5,
+        200: 0.77777778,
+        250: 0.986,
+        300: 1,
+        350: 1,
+    }[x]
+
+
+def k4(x):
+    return {
+        0: 0,
+        1: 0.056,
+        2: 0.22,
+        3: 0.5,
+        4: 0.778,
+        5: 0.944,
+        6: 1,
+    }[x]
+
+def k5(x):
+    return {
+        150: 1,
+        170: 1,
+        200: 0.988,
+        204: 0.986,
+        220: 0.975,
+        250: 0.94444,
+        300: 0.875,
+        350: 0.77777778,
+        400: 0.6527777,
+        450: 0.5,
+        500: 0.347222,
+        550: 0.2222,
+        600: 0.1,
+        650: 0.05,
+        680: 0.027,
+        700: 0.01,
+        750: 0.01
+    }[x]
+
 
 criteries_quantitative = [
     FuzzyCriteria(
@@ -11,34 +70,34 @@ criteries_quantitative = [
     ),
     FuzzyCriteria(
         'Длина распространения сигнала',
-        get_normal(0, 30),
+        k2,
         (0, 30),
-        0.1
+        5
     ),
     FuzzyCriteria(
         'Пропускная способность',
-        get_normal(0, 300),
+        k3,
         (0, 350),
-        0.1
+        50
     ),
     FuzzyCriteria(
         'Количество VLAN портов',
-        get_normal(0, 6),
+        k4,
         (0, 6),
-        0.1
+        1
     ),
     FuzzyCriteria(
         'Вес',
-        get_normal(150, 750),
+        k5,
         (150, 750),
-        0.1
+        50
     ),
 ]
 criteries_qualitative = [QualitativeCriteria('Известность бренда')]
 
 criteries = criteries_quantitative + criteries_qualitative
 
-alternatives = Alternatives(
+many_criteria_choice = ManyCriteriaChoice(
     [
         'D-Link DIR-620A',
         'Zyxel Keenetic Start II',
@@ -62,10 +121,11 @@ alternatives = Alternatives(
     ]]
 )
 
-alternatives.print_criteries(
+many_criteria_choice.print_criteries(
     criteries_quantitative,
     criteries_qualitative
 )
 
-alternatives.print_symbols()
-sets = alternatives.get_sets(criteries_quantitative)
+many_criteria_choice.print_symbols()
+sets = many_criteria_choice.get_sets(criteries_quantitative, criteries_qualitative)
+many_criteria_choice.get_generalized_criteria(sets)
