@@ -14,8 +14,8 @@ def print_indexes_list(label: str, name_list: [str]):
 
 
 def print_table(table, header, title: str = ''):
-    print()
     if title:
+        print()
         print(title)
     print(tabulate(
         table,

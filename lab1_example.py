@@ -39,6 +39,7 @@ def k4(x):
         6: 1,
     }[x]
 
+
 def k5(x):
     return {
         150: 1,
@@ -121,6 +122,15 @@ many_criteria_choice = ManyCriteriaChoice(
     ]]
 )
 
+criteria_pairs = [
+    [1, 4, 3, 3, 6, 5],
+    [0.25, 1, 0.5, 0.5, 3, 2],
+    [0.333, 2, 1, 1, 5, 4],
+    [0.333, 2, 1, 1, 5, 4],
+    [0.166, 0.333, 0.2, 0.2, 1, 0.5],
+    [0.2, 0.5, 0.25, 0.25, 2, 1],
+]
+
 many_criteria_choice.print_criteries(
     criteries_quantitative,
     criteries_qualitative
@@ -128,5 +138,18 @@ many_criteria_choice.print_criteries(
 
 many_criteria_choice.print_symbols()
 sets = many_criteria_choice.get_sets(criteries_quantitative, criteries_qualitative)
+
+print()
+print('Определение обобщенного критерия')
 generalized_criteria = many_criteria_choice.get_generalized_criteria(sets)
 many_criteria_choice.print_distance(generalized_criteria)
+
+alfa = many_criteria_choice.get_alfa(criteries, criteria_pairs)
+
+alfa_sets = many_criteria_choice.sets_to_alfa(sets, alfa)
+
+print()
+print('Нормированная матрица критериев с учётом их важности: (возведение в степень alfa)')
+alfa_generalized_criteria = many_criteria_choice.get_generalized_criteria(alfa_sets)
+many_criteria_choice.print_distance(alfa_generalized_criteria)
+many_criteria_choice.print_general_table(alfa_generalized_criteria)

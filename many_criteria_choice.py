@@ -170,3 +170,67 @@ class ManyCriteriaChoice:
             ['Ki', 'Четкое', 'Хемминг', 'Евклид', 'Нормировка', 'Энтропия'],
             'Оценка индекса нечеткости'
         )
+
+    def get_alfa(self, criterias: [Criteria], criteria_pairs):
+        criteria_names = self.get_name_for_criteries(criterias)
+        header = [''] + criteria_names + ['соб. вект', 'н. степ. Пр']
+
+        eigenvalues = QualitativeCriteria.get_eigenvalues(
+            QualitativeCriteria.get_avg_geometry(
+                criteria_pairs
+            )
+        )
+        exponented_eigenvalues = [eigenvalue * len(criterias) for eigenvalue in eigenvalues]
+
+        transposed_table_data = \
+            [criteria_names] \
+            + [
+                list(row)
+                for row in zip(*criteria_pairs)
+            ] \
+            + [
+                eigenvalues,
+                exponented_eigenvalues
+            ]
+
+        for index, row in enumerate(transposed_table_data):
+            if index:
+                row.append(sum(row))
+            else:
+                row.append('Сумма')
+
+        print_table(
+            list(zip(*transposed_table_data)),
+            header,
+            'Важность критериев'
+        )
+        print_table(
+            [[''] + exponented_eigenvalues],
+            [''] + criteria_names,
+            'Степень alfa для критериев'
+        )
+        return exponented_eigenvalues[:-1]
+
+    def sets_to_alfa(self, sets, alfa):
+        return [
+            [
+                el ** alfa[index]
+                for el in row
+            ]
+            for index, row in enumerate(sets)
+        ]
+
+    def print_general_table(self, generalized_criteria):
+        print_table(
+            [generalized_criteria],
+            self.alternatives,
+            'Итоговая таблица'
+        )
+
+        max_index = 0
+        for index, alternative_criteria in enumerate(generalized_criteria):
+            if generalized_criteria[max_index] < alternative_criteria:
+                max_index = index
+
+        print()
+        print(f'Таким образом, маршрутизатор {self.alternatives[max_index]} является лучшей альтернативой.')
