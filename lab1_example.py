@@ -128,4 +128,5 @@ many_criteria_choice.print_criteries(
 
 many_criteria_choice.print_symbols()
 sets = many_criteria_choice.get_sets(criteries_quantitative, criteries_qualitative)
-many_criteria_choice.get_generalized_criteria(sets)
+generalized_criteria = many_criteria_choice.get_generalized_criteria(sets)
+many_criteria_choice.print_distance(generalized_criteria)

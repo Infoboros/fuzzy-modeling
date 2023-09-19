@@ -1,5 +1,6 @@
 from criteria import Criteria, FuzzyCriteria, QualitativeCriteria
 from utils import print_indexes_list, print_table, max_norm_vector
+from math import log, sqrt
 
 
 class ManyCriteriaChoice:
@@ -55,7 +56,7 @@ class ManyCriteriaChoice:
         for index, criteria in enumerate(criteries_quantitative):
             print()
             print(f'{index + 1}. {criteria.name}')
-            criteria.print_criteria()
+            # criteria.print_criteria()
             criteria_set = criteria.get_set(transposed_quantitative[index])
 
             print(
@@ -96,4 +97,76 @@ class ManyCriteriaChoice:
             +
             [['MAX'] + ([''] * len(transposed_normalized_sets[0])) + [max(minimums)]],
             header
+        )
+
+        return minimums
+
+    @staticmethod
+    def de_fuzzy(vector):
+        return [
+            1 if el > 0.5 else 0
+            for el in vector
+        ]
+
+    @staticmethod
+    def hemming(vector):
+        return [
+            1 - el if el > 0.5 else el
+            for el in vector
+        ]
+
+    @staticmethod
+    def evklid(vector):
+        return [
+            el ** 2
+            for el in ManyCriteriaChoice.hemming(vector)
+        ]
+
+    @staticmethod
+    def normalize(vector):
+        summary = sum(vector)
+        return [
+            el / summary
+            for el in vector
+        ]
+
+    @staticmethod
+    def entropy(vector):
+        return [
+            el * log(el)
+            for el in vector
+        ]
+
+    def print_distance(self, generalized_criteria):
+        de_fuzzy = self.de_fuzzy(generalized_criteria)
+
+        hemming = self.hemming(generalized_criteria)
+        sum_hemming = sum(hemming)
+        norm_hemming = sum_hemming / len(generalized_criteria)
+        hemming_distance = norm_hemming * 2
+
+        evklid = self.evklid(generalized_criteria)
+        sum_evklid = sum(evklid)
+        sqrt_evklid = sqrt(sum_evklid)
+        norm_evklid = sqrt_evklid / sqrt(len(generalized_criteria))
+        evklid_distance = norm_evklid * 2
+
+        normalize = self.normalize(evklid)
+        entropy = self.entropy(normalize)
+        sum_entropy = sum(entropy)
+        entropy_distance = - 1 / log(len(generalized_criteria)) * sum_entropy
+
+        table = [
+            generalized_criteria + ['Сумма', '', '', ''],
+            de_fuzzy + [sum(de_fuzzy), '', 'Нормированные', 'ИН'],
+            hemming + [sum_hemming, 'sqrt', norm_hemming, hemming_distance],
+            evklid + [sum_evklid, sqrt_evklid, norm_evklid, evklid_distance],
+            normalize + [sum(normalize), '', '', 'enthropy'],
+            entropy + [sum_entropy, '', '', entropy_distance]
+        ]
+
+        print_table(
+            list(zip(*table)),
+            ['Ki', 'Четкое', 'Хемминг', 'Евклид', 'Нормировка', 'Энтропия'],
+            'Оценка индекса нечеткости'
         )
