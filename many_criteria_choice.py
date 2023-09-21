@@ -56,7 +56,7 @@ class ManyCriteriaChoice:
         for index, criteria in enumerate(criteries_quantitative):
             print()
             print(f'{index + 1}. {criteria.name}')
-            # criteria.print_criteria()
+            criteria.print_criteria()
             criteria_set = criteria.get_set(transposed_quantitative[index])
 
             print(
