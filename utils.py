@@ -29,3 +29,10 @@ def max_norm_vector(vector) -> [float]:
         el / maximum
         for el in vector
     ]
+
+def norm_vector(vector) -> [float]:
+    summary = sum(vector)
+    return [
+        el / summary
+        for el in vector
+    ]

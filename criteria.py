@@ -4,6 +4,8 @@ from functools import reduce
 
 from matplotlib import pyplot as plt
 
+from utils import norm_vector, max_norm_vector
+
 
 class Criteria(ABC):
 
@@ -60,6 +62,18 @@ class QualitativeCriteria(Criteria):
             lambda geometry: geometry / sum_avg_geometry if sum_avg_geometry else 0.0,
             avg_geometry
         ))
+
+    def get_norm_us(self, pairs):
+        return max_norm_vector(
+            self.get_eigenvalues(
+                self.get_avg_geometry(
+                    pairs
+                )
+            )
+        )
+
+    def get_set(self, pairs) -> [float]:
+        return self.get_norm_us(pairs)
 
     def print_criteria(self):
         print(f'Качественный критерий')
