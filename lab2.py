@@ -232,6 +232,12 @@ implication_rules = ImplicationSet([
                 (0, 10),
                 0.1
             ),
+            FuzzyCriteria(
+                'поддерживает много языков програмирования',
+                lambda x: 1 - get_normal(5, 2)(x),
+                (0, 5),
+                0.1
+            ),
         ],
         'неудовлетворительный'
     )
@@ -241,7 +247,7 @@ alternatives_indexes_for_implications = [
     (0, 3, 1, 2),
     (0, 3, 1, 2, 4, -1),
     (0, 3, 1, 2, -1),
-    (0, 3, 1, 2),
+    (0, 3, 1, 2, 4),
 ]
 
 composite_rules.print_criteries(
