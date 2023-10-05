@@ -96,30 +96,6 @@ criteries_qualitative = [QualitativeCriteria('Известность бренд�
 
 criteries = criteries_quantitative + criteries_qualitative
 
-composite_rules = CompositeRule(
-    [
-        'D-Link DIR-620A',
-        'Zyxel Keenetic Start II',
-        'D-Link DIR-320A',
-        'TP-LINK Archer C50',
-        'NetGear WNR614-100',
-    ],
-    [
-        [1650, 20, 300, 5, 204],
-        [1450, 15, 300, 1, 170],
-        [1199, 10, 150, 4, 220],
-        [2199, 30, 300, 6, 680],
-        [1399, 15, 300, 4, 200],
-    ],
-    [[
-        [1, 4, 1, 3, 5],
-        [0.25, 1, 0.25, 0.3333, 2],
-        [1, 4, 1, 3, 5],
-        [0.33333, 3, 0.33333, 1, 4],
-        [0.2, 0.5, 0.2, 0.25, 1]
-    ]]
-)
-
 target_linguistic_variable = LinguisticVariable(
     'степень соответствия с целью',
     ("соответствует", "более чем соответствует", "абсолютно соответствует", "очень соответствует", "не соответствует"),
@@ -146,6 +122,31 @@ target_linguistic_variable = LinguisticVariable(
             'func': lambda x: 1 - x
         }
     ]
+)
+
+composite_rules = CompositeRule(
+    [
+        'D-Link DIR-620A',
+        'Zyxel Keenetic Start II',
+        'D-Link DIR-320A',
+        'TP-LINK Archer C50',
+        'NetGear WNR614-100',
+    ],
+    [
+        [1650, 20, 300, 5, 204],
+        [1450, 15, 300, 1, 170],
+        [1199, 10, 150, 4, 220],
+        [2199, 30, 300, 6, 680],
+        [1399, 15, 300, 4, 200],
+    ],
+    [[
+        [1, 4, 1, 3, 5],
+        [0.25, 1, 0.25, 0.3333, 2],
+        [1, 4, 1, 3, 5],
+        [0.33333, 3, 0.33333, 1, 4],
+        [0.2, 0.5, 0.2, 0.25, 1]
+    ]],
+    target_linguistic_variable
 )
 
 implication_rules = ImplicationSet([
@@ -290,8 +291,14 @@ Ms = composite_rules.get_m(implication_rules, alternatives_indexes_for_implicati
 
 print()
 print('Преобразование полученных импликаций')
-Ds = composite_rules.get_d(Ms, target_linguistic_variable, range(5))
+Ds = composite_rules.get_d(Ms, range(5))
 
 print()
 print('Определим обобщенную цель: D ̃:D ̃=П(i=1;5)D ̃i')
-aggregate_Ds = composite_rules.get_aggregate_d(Ds, target_linguistic_variable)
+aggregate_Ds = composite_rules.get_aggregate_d(Ds)
+
+print()
+print('Произведем точечную оценку')
+Fa = composite_rules.get_Fa(aggregate_Ds)
+
+composite_rules.ranging(Fa)
