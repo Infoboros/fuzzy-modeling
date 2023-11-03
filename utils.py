@@ -30,9 +30,19 @@ def max_norm_vector(vector) -> [float]:
         for el in vector
     ]
 
+
 def norm_vector(vector) -> [float]:
     summary = sum(vector)
     return [
         el / summary
         for el in vector
     ]
+
+
+def get_interval(range, step):
+    start, stop = range
+    position = start
+
+    while position <= stop:
+        yield position
+        position += step
