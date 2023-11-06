@@ -14,7 +14,7 @@ class Criteria:
 
     @property
     def interval(self):
-        return get_interval(self.range, self.step)
+        return list(get_interval(self.range, self.step))
 
 
 class A1(Criteria):
