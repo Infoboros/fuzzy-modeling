@@ -10,7 +10,7 @@ implication = lambda x, y: min(1, 1 - x + y)
 accumulation_funk = max
 DeFuzzyficator = SimpleDeFuzzyficator
 
-xs = [15, 3, 9, 1, 1]
+xs = [9, 2.5, 8, 5, 5]
 
 print(f'Входные данные {", ".join([f"x{index + 1}={x}" for index, x in enumerate(xs)])}')
 print()
