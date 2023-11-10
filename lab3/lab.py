@@ -1,13 +1,13 @@
 from lab3.accumulation import Accumulation, AccumulationProcessor
 from lab3.activation import lB1, lB2, lB3, lB4, lB5, ActivateProcessor
 from lab3.defuzzyficator import SimpleDeFuzzyficator
-from lab3.fuzzyficator import SingletonFuzzyficator
+from lab3.fuzzyficator import SingletonFuzzyficator, NoneSingletonFuzzyficator
 from lab3.pred_activations import *
 
 # Настройки
-Fuzzyficator = SingletonFuzzyficator
+Fuzzyficator = NoneSingletonFuzzyficator
 implication = lambda x, y: min(1, 1 - x + y)
-accumulation_funk = max
+accumulation_funk = min
 DeFuzzyficator = SimpleDeFuzzyficator
 
 xs = [9, 2.5, 8, 5, 5]
